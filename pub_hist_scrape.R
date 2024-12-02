@@ -18,7 +18,7 @@ remDr$open()
 Sys.sleep(1)
 
 #define search term
-search_term <- "moral reasoning" #"what ever you want in quotation marks"
+search_term <- "social media morality" #"what ever you want in quotation marks"
 
 #intergroup relations, cognitive consistency, social identity, leadership, group decision making, reasoning, moral resoning
 
@@ -84,13 +84,13 @@ Sys.sleep(runif(1, 2, 4))
 
 
 #Tidy data and write to csv
-no_articles %>%
+no_articles %<>%
   mutate(
-   articles = str_extract(articles, "(?<=Ungefähr).*(?=Ergebnisse)") %>%
+   articles = str_extract(articles, "(?<=Ungefähr|About).*(?=Ergebnisse|results)") %>%
      str_squish() %>%
-     str_remove("\\.|\\s")  %>%
+     str_remove_all("\\.|\\s|’|,")  %>%
      as.numeric()
-  ) %>% view()
+  )# %>% view()
   
 
 write.csv(no_articles, paste0(search_term, ".csv"), row.names =  FALSE)

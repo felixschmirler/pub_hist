@@ -18,7 +18,9 @@ remDr$open()
 Sys.sleep(1)
 
 #define search term
-search_term <- "political polarization" #"what ever you want in quotation marks"
+search_term <- "moral reasoning" #"what ever you want in quotation marks"
+
+#intergroup relations, cognitive consistency, social identity, leadership, group decision making, reasoning, moral resoning
 
 #create empty dataframe
 no_articles <- tibble(
@@ -50,7 +52,6 @@ lower <- as.character(i)
 remDr$findElement("id", "gs_as_ylo")$sendKeysToElement(list(key = "control", "a"))  # Select all text
 remDr$findElement("id", "gs_as_ylo")$sendKeysToElement(list(key = "delete"))        # Delete selected text
 remDr$findElement("id", "gs_as_ylo")$sendKeysToElement(list(lower))
-remDr$screenshot(display = TRUE)
 
 Sys.sleep(runif(1, 2, 4))
 
@@ -83,13 +84,13 @@ Sys.sleep(runif(1, 2, 4))
 
 
 #Tidy data and write to csv
-no_articles %<>%
+no_articles %>%
   mutate(
    articles = str_extract(articles, "(?<=Ungefähr).*(?=Ergebnisse)") %>%
      str_squish() %>%
-     str_remove("\\.") %>%
+     str_remove("\\.|\\s")  %>%
      as.numeric()
-  )
+  ) %>% view()
   
 
 write.csv(no_articles, paste0(search_term, ".csv"), row.names =  FALSE)
